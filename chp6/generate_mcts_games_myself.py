@@ -60,8 +60,8 @@ def main():
     parser.add_argument('--rounds', '-r', type=int, default=1000)   # 蒙特卡洛搜索轮数
     parser.add_argument('--temperature', '-t', type=float, default=0.8)  # 蒙特卡洛搜索活跃度
     parser.add_argument('--max-moves', '-m', type=int, default=60,
-                        help='Max moves per game.')
-    parser.add_argument('--num-games', '-n', type=int, default=10)
+                        help='Max moves per game.')  # 最大落子动作次数
+    parser.add_argument('--num-games', '-n', type=int, default=10)  # 多少局游戏测试
     parser.add_argument('--board-out')  # 特征输出配置文件名
     parser.add_argument('--move-out')   # 标签文件名
 
