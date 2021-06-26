@@ -1,7 +1,10 @@
 
 # tag::play_against_your_bot[]
 from dlgo.agent import navie
-from dlgo import goboard_slow as goboard
+# from dlgo import goboard_slow as goboard
+from dlgo import goboard as goboard  # 加入哈希的人机对弈
+
+
 from dlgo import gotypes
 from dlgo.utils import print_board, print_move, point_from_coords
 from six.moves import input

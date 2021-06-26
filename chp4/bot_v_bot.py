@@ -1,11 +1,10 @@
 from __future__ import print_function
 # tag::bot_vs_bot[]
 from dlgo.agent.navie import RandomBot
-from dlgo import goboard_slow as goboard
+from dlgo import goboard as goboard
 from dlgo import gotypes
 from dlgo.utils import print_board, print_move
 import time
-
 
 """":argument
     机器自对弈脚本
@@ -18,6 +17,8 @@ def main():
     bots = {
         gotypes.Player.black: RandomBot(),
         gotypes.Player.white: RandomBot(),
+        # gotypes.Player.black: FastRandomBot(),
+        # gotypes.Player.white: FastRandomBot(),
     }
     while not game.is_over():
         time.sleep(0.3)  # <1> 0.3s休眠

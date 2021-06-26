@@ -75,7 +75,7 @@ def print_board(board):
 # end::print_utils[]
 
 
-# tag::human_coordinates[]
+# tag::human_coordinates[]  解析人工输入的棋盘坐标
 def point_from_coords(coords):
     col = COLS.index(coords[0]) + 1
     row = int(coords[1:])

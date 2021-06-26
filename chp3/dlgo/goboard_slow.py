@@ -270,11 +270,13 @@ class GoString():
         self.stones = set(stones)  # 棋子集合        set是一个无序且不重复的元素集合
         self.liberties = set(liberties)  # 空点(气数)集合
 
-    # 减少气数
+    "棋链的操作方法"
+
+    # 减少自由坐标
     def remove_liberty(self, point):
         self.liberties.remove(point)
 
-    # 增加气数
+    # 增加自由坐标
     # 增加一口气，实际上就是增加空点集合中的一个空点
     def add_liberty(self, point):
         self.liberties.add(point)
@@ -297,22 +299,29 @@ class GoString():
         """
 
         assert go_string.color == self.color  # 判断颜色是否一致
-        combined_stones = self.stones | go_string.stones  # 颜色一致，相连成棋链
+        # combined_stones 一个集合
+        combined_stones = self.stones | go_string.stones  # 颜色一致，相连成棋链 或运算完成
         # 返回棋链
+
         return GoString(
             self.color,  # 该棋链的棋子颜色
             combined_stones,  # 该棋链的棋子集合set
-            (self.liberties | go_string.liberties) - combined_stones)# 该棋链的气数
+            (self.liberties | go_string.liberties) - combined_stones)  # 棋链拥有的自由点坐标的集合
+        "注意"
+        """
+                 (self.liberties | go_string.liberties) - combined_stones  的运算结果是一个集合，不是数，
+                 也就是求出这个棋链的自由点坐标的集合，要求得该棋链的气数，使用函数num_liberties() 
+        """
 
     # 参考书中图3-1来解释：(self.liberties | go_string.liberties) - combined_stones
     # 试想在第二行两个分离的黑棋中落一个黑棋，那么左边单个黑棋和右边两个黑棋就会连成一片，左边黑棋与落在中间黑棋连接成片时，
     # 它的自由点集合要减去中间落入的黑棋，同理右边两个黑棋的自由点也要减去落在中间黑棋所占据的位置，
     # 这就是为何要执行语句(self.liberties | go_string.liberties) - combined_stones。
-    @property  # 创建只读属性，
-    def num_liberties(self):  # 调用num_liberties来得到任意时刻的棋子串的气
+    @property  # 创建只读属性
+    def num_liberties(self):  # "调用num_liberties来得到任意时刻的棋子串的气数"
         return len(self.liberties)  # 返回任一棋链所拥有的气数
 
-    def __eq__(self, other):  # 判断两个棋子串是否相等
+    def __eq__(self, other):  # 判断两个棋子串是否相等  颜色？ 棋子集合？ 棋链自由点？
         return isinstance(other, GoString) and \
                self.color == other.color and \
                self.stones == other.stones and \
@@ -399,7 +408,7 @@ class Board():
         return 1 <= point.row <= self.num_rows and 1 <= point.col <= self.num_cols
 
     # 返回交叉点上的内容：如果该交叉点已经落子，返回对应的player对象，否则返回none
-    def get(self, point):
+    def get(self, point):  # 返回对应坐标棋子的颜色
         string = self._grid.get(point)
         if string is None:
             return None
@@ -414,10 +423,9 @@ class Board():
 
     def __eq__(self, other):
         return isinstance(other, Board) and \
-            self.num_rows == other.num_rows and \
-            self.num_cols == other.num_cols and \
-            self._grid == other._grid
-
+               self.num_rows == other.num_rows and \
+               self.num_cols == other.num_cols and \
+               self._grid == other._grid
 
 
 # Board end
@@ -450,7 +458,6 @@ class Move():  # 动作： 落子、跳过、认输,对动作编码
 
 
 """面代码只是拥有表示下棋时的一下基本概念，并不包含逻辑，接下来我们要编写围棋的规则及逻辑代码"""
-
 
 
 # 落子和棋盘都完成了，由于每次落子到棋盘上后，棋局的状态会发生变化，接下来我们完成棋盘状态的检测和落子法性检测，
@@ -531,9 +538,9 @@ class GameState():
         if move.is_pass or move.is_resign:
             return True
         return (
-            self.board.get(move.point) is None and
-            not self.is_move_self_capture(self.next_player, move) and
-            not self.does_move_violate_ko(self.next_player, move))
+                self.board.get(move.point) is None and
+                not self.is_move_self_capture(self.next_player, move) and
+                not self.does_move_violate_ko(self.next_player, move))
 
     # 判断棋局有无结束
     def is_over(self):  # 决定围棋比赛结束的时机

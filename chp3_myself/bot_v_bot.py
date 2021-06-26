@@ -16,17 +16,17 @@ def main():
     board_size = 9
     game = goboard.GameState.new_game(board_size)
     bots = {
-        gotypes.Player.black: RandomBot(),
-        gotypes.Player.white: RandomBot(),
+        gotypes.Player.black: RandomBot(),  # 机器人棋手执黑
+        gotypes.Player.white: RandomBot(),  # 机器人棋手执白
     }
     while not game.is_over():
         time.sleep(0.3)  # <1> 0.3s休眠
 
         print(chr(27) + "[2J")  # <2> 每次落子前都清除屏幕
         print_board(game.board)
-        bot_move = bots[game.next_player].select_move(game)
-        print_move(game.next_player, bot_move)
-        game = game.apply_move(bot_move)
+        bot_move = bots[game.next_player].select_move(game)  # 机器人一人一次使用机器生成棋盘落子坐标
+        print_move(game.next_player, bot_move)  # 打印当前棋手和棋手动作
+        game = game.apply_move(bot_move)   # 把游戏动作添加到游戏状态中记录
     print("游戏结束")
 
 
