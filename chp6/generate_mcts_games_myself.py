@@ -62,8 +62,8 @@ def main():
     parser.add_argument('--max-moves', '-m', type=int, default=60,
                         help='Max moves per game.')
     parser.add_argument('--num-games', '-n', type=int, default=10)
-    parser.add_argument('--board-out')  # 特征输出配置文件
-    parser.add_argument('--move-out')
+    parser.add_argument('--board-out')  # 特征输出配置文件名
+    parser.add_argument('--move-out')   # 标签文件名
 
     args = parser.parse_args()  # <1>  # 此应用程序允许通过命令行参数自定义
     xs = []
