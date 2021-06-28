@@ -18,7 +18,7 @@ class IllegalMoveError(Exception):
 
 
 # 棋盘走棋逻辑设计
-
+"加入哈希值来加速棋盘"
 
 #  棋链  start
 # 棋链用来检查一组相同颜色的相连棋子和它们的气
@@ -37,7 +37,7 @@ class GoString():
     # 修该版
     def without_liberty(self, point):
         new_liberties = self.liberties - set([point])
-        return GoString(self.color, self.stone, new_liberties)
+        return GoString(self.color, self.stones, new_liberties)
 
     # 增加气数
     # 增加一口气，实际上就是增加空点集合中的一个空点
@@ -82,7 +82,7 @@ class GoString():
     def __eq__(self, other):  # 判断两个棋子串是否相等
         return isinstance(other, GoString) and \
                self.color == other.color and \
-               self.stone == other.stone and \
+               self.stones == other.stones and \
                self.liberties == other.liberties
 
     # 添加
@@ -117,6 +117,7 @@ class GoString():
 
 # 棋盘
 # Board Start
+"包含哈希值的围棋棋盘"
 class Board():
     def __init__(self, num_rows, num_cols):  # 初始化空网格
         # 一个棋盘用特定大小的行和列以及一个空的棋子串集合来初始化
@@ -124,7 +125,7 @@ class Board():
         self.num_cols = num_cols
         self._grid = {}  # 存储所有棋盘上的棋子串
         # 哈希值  加速棋盘
-        self.hash = zobrist.EMPTY_BOARD
+        self._hash = zobrist.EMPTY_BOARD
 
     # 落子方法
     # 加入哈希值
@@ -139,7 +140,8 @@ class Board():
         # 用来让程序测试这个condition，如果condition为false，那么raise一个AssertionError出来
         assert self.is_on_grid(point)  # 确保位置在棋盘内
         if self._grid.get(point) is None:  # 确保给定位置没有被占据
-            print('Illegal play on %s' % str(point))
+            # print('Illegal play on %s' % str(point))
+            i = 0
         assert self._grid.get(point) is None
         adjacent_same_color = []  # 相同颜色棋盘块集合
         adjacent_opposite_color = []  # 不同颜色棋盘块集合
@@ -305,9 +307,11 @@ class Move():  # 动作： 落子、跳过、认输,对动作编码
 
 # 棋盘状态的检测和落子检测  GameState类包括棋盘上的所有棋子，以及跟踪轮到谁下以及先前的游戏状态
 
+"""    GameState类中来捕获游戏的当前状态。粗略地说，GameState类应该能够获取棋盘盘面，知晓落子方，获悉上一个游戏状态，以及知道上一个操作   """
 
 # GameState  start
 class GameState():
+    # 用哈希值初始化游戏状态
     def __init__(self, board, next_player, previous, move):
         self.board = board  # 棋盘
         self.next_player = next_player  # 下一手
@@ -368,7 +372,7 @@ class GameState():
         next_board = copy.deepcopy(self.board)
         next_board.place_stone(player, move.point)
         next_situation = (player.other, next_board.zobrist_hash())
-        return next_situation in self.previous_states
+        return next_situation in self.previous_states # 遍历，检查历史棋局状态
 
     # 在给定游戏状态下，判断这个动作是否合法
     def is_valid_move(self, move):

@@ -11,14 +11,15 @@ from dlgo.utils import print_board, print_move
 
 
 # tag::generate_mcts[]
-def generate_game(board_size, rounds, max_moves, temperature):
+def generate_game(board_size, rounds, max_moves, temperature): # 棋盘大小  ， 推演轮数、最大落子次数、蒙特卡洛搜索活跃度
     boards, moves = [], []  # <1> boards   保存编码后的棋局状态，moves保存编码后的落子动作
 
     encoder = get_encoder_by_name('oneplane', board_size)  # <2>  按名字来例化一个编码器
 
     game = goboard.GameState.new_game(board_size)  # <3> 新开一局游戏
 
-    bot = mcts.MCTSAgent(rounds, temperature)  # <4>  例化蒙特卡洛机器人
+    "棋手使用蒙特卡洛树搜索的方法"
+    bot = mcts.MCTSAgent(rounds, temperature)  # <4>  例化蒙特卡洛棋手机器人
 
     num_moves = 0
     while not game.is_over():
@@ -37,7 +38,7 @@ def generate_game(board_size, rounds, max_moves, temperature):
         if num_moves > max_moves:  # <9>
             break
 
-    return np.array(boards), np.array(moves)  # <10>
+    return np.array(boards), np.array(moves)  # <10>  棋盘数组  、 执行动作
 
 
 # <1> In `boards` we store encoded board state, `moves` is for encoded moves.
@@ -72,14 +73,14 @@ def main():
     for i in range(args.num_games):
         print('Generating game %d/%d...' % (i + 1, args.num_games))
         # 如执行指令：  python generate_mcts_games.py -n 20 --board-out features.npy  --move-out labels.npy
-        #
+        # 生成游戏
         x, y = generate_game(args.board_size,
                              args.rounds,
                              args.max_moves,
                              args.temperature)  # <2>根据给定的棋局数量来生成相应的棋局数据
         xs.append(x)
         ys.append(y)
-
+    # np.concatenate() 能够一次完成多个数组的拼接。
     x = np.concatenate(xs)  # <3> 当所有棋局都生成后，为棋局添加相应的特征与标签
     y = np.concatenate(ys)
 

@@ -7,11 +7,16 @@ __all__ = [
     'AlphaBetaAgent',
 ]
 
+
+"alpha-beta-pruning  剪枝,缩减搜索宽度"
+
 MAX_SCORE = 999999
 MIN_SCORE = -999999
 
 
 # tag::alpha-beta-prune-1[]
+# 检查是否停止对一个分支的评估
+# 实现剪枝
 def alpha_beta_result(game_state, max_depth, best_black, best_white, eval_fn):
     if game_state.is_over():                                   # <1>
         if game_state.winner() == game_state.next_player:      # <1>
@@ -58,7 +63,7 @@ def alpha_beta_result(game_state, max_depth, best_black, best_white, eval_fn):
 
 
 # tag::alpha-beta-agent[]
-class AlphaBetaAgent(Agent):
+class AlphaBetaAgent(Agent):  # 剪枝代理
     def __init__(self, max_depth, eval_fn):
         Agent.__init__(self)
         self.max_depth = max_depth

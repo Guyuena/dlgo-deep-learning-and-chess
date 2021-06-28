@@ -3,6 +3,7 @@ from dlgo.gotypes import Point
 __all__ = [
     'is_point_an_eye',
 ]
+"检测落子是否为眼的工具函数"
 
 
 def is_point_an_eye(board, point, color):

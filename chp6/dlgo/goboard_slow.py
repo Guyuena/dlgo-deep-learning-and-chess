@@ -215,18 +215,22 @@ class Move():  # 动作： 落子、跳过、认输,对动作编码
 # GameState  start
 class GameState():
     def __init__(self, board, next_player, previous, move):
-        self.board = board  # 棋盘
-        self.next_player = next_player  # 下一手
-        self.previous_state = previous  # 前一状态
-        self.last_move = move  # 最新动作
+        self.board = board  # 当前棋盘棋局棋子布局
+        self.next_player = next_player  # 下一回合执棋方
+        self.previous_state = previous  # 上一回合状态状态
+        self.last_move = move  # 上一步动作
 
     def apply_move(self, move):
         if move.is_play:
             next_board = copy.deepcopy(self.board)  # 将落子前的盘面进行深度拷贝
-            next_board.place_stone(self.next_player, move.point)
+            next_board.place_stone(self.next_player, move.point)  # 外部调用apply_move(move)就会完成落子动作
         else:
             next_board = self.board
         return GameState(next_board, self.next_player.other, self, move)
+        # 在完成新的落子后，给外部调用apply_move()返回一个GameState，
+        # GameState(next_board, self.next_player.other, self, move) 就是例化一个GameState对象，
+        # 例化就会把next_board、next_player.other、selfmove这四个参数传入到GameState的init中完成对象参数值得配置
+
 
     # 新开一局游戏
     @classmethod
@@ -234,7 +238,7 @@ class GameState():
         if isinstance(board_size, int):
             board_size = (board_size, board_size)
         board = Board(*board_size)
-        return GameState(board, Player.black, None, None)
+        return GameState(board, Player.black, None, None)  # 新开一局游戏，返回游戏状态，因为新开局，所以有两个参数为空，且这个设置为 黑子为先手
 
     """
     三个规则：
@@ -252,6 +256,7 @@ class GameState():
     #     next_board.place_stone(player, move.point)
     #     new_string = next_board.get_go_string(move.point)
     #     return new_string.num_liberties == 0
+    "self-capture:自吃"
     def is_move_self_capture(self, player, move):
         if not move.is_play:
             return False
@@ -290,14 +295,14 @@ class GameState():
             not self.is_move_self_capture(self.next_player, move) and
             not self.does_move_violate_ko(self.next_player, move))
 
-    # 判断棋局有无结束
+    # 判断棋局有无结束  决定游戏结束的时机
     def is_over(self):  # 决定围棋比赛结束的时机
         if self.last_move is None:
             return False
-        if self.last_move.is_resign:
-            return True
+        if self.last_move.is_resign:  # 认输
+            return True  # 游戏结束
         second_last_move = self.previous_state.last_move
-        if second_last_move is None:
+        if second_last_move is None:  # 前两步落子动作
             return False
         # 如果两个棋手同时放弃落子，棋局结束
         return self.last_move.is_pass and second_last_move.is_pass

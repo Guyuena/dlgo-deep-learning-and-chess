@@ -9,8 +9,9 @@ __all__ = [
 
 
 # tag::base_encoder[]
-"""编码器接口"""
+"""编码器接口  API"""
 class Encoder:
+    """这里只定义接口名，但接口的实现由具体的编码器来按实际要求实现"""
     def name(self):  # <1># 把模型正在使用的编码器名称输出到日志中或存储下来
         raise NotImplementedError()
 
@@ -39,7 +40,7 @@ class Encoder:
 
 
 # tag::encoder_by_name[]
-"""通过名字返回相应的编码器"""
+"""通过名字创建并返回相应的编码器"""
 def get_encoder_by_name(name, board_size):  # <1> 根据编码器名字来构建它的实例
     if isinstance(board_size, int):
         board_size = (board_size, board_size)  # <2>

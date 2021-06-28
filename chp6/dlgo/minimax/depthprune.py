@@ -10,6 +10,7 @@ __all__ = [
 MAX_SCORE = 999999
 MIN_SCORE = -999999
 
+" 深度剪枝"
 
 def reverse_game_result(game_result):
     if game_result == GameResult.loss:
@@ -20,6 +21,7 @@ def reverse_game_result(game_result):
 
 
 # tag::depth-prune[]
+"包含深度剪枝的极小化极大搜索"
 def best_result(game_state, max_depth, eval_fn):
     if game_state.is_over():                               # <1>
         if game_state.winner() == game_state.next_player:  # <1>
@@ -44,6 +46,7 @@ def best_result(game_state, max_depth, eval_fn):
 
 
 # tag::depth-prune-agent[]
+"深度剪枝代理"
 class DepthPrunedAgent(Agent):
     def __init__(self, max_depth, eval_fn):
         Agent.__init__(self)

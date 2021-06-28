@@ -11,6 +11,7 @@ from dlgo.goboard import Point
     使用单平面围棋棋盘编码器对  '游戏状态' 进行编码
 """
 
+"""继承编码器的基类base.Encoder，创建自己的编码器"""
 
 # tag::oneplane_encoder[]
 # 使用1表示下一回合落子方，并用-1表示对手。将把这种编码称为OnePlaneEncoder
@@ -18,6 +19,7 @@ class OnePlaneEncoder(Encoder):
     # 初始化
     def __init__(self, board_size):  # 传入棋盘大小·
         self.board_width, self.board_height = board_size
+        """后面想创建几个平面的编码器主要是修改该参数"""
         self.num_planes = 1  # 平面数量
 
     def name(self):  # <1>  可以应oneplane来指代这个编码器

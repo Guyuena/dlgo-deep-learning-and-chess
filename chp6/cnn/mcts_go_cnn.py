@@ -10,10 +10,12 @@ from keras.layers import Conv2D, MaxPooling2D
 
 np.random.seed(123)  # 设置一个固定的随机种子，以确保这个脚本可以严格重现
 
-X = np.load('../generated_games/features-200.npy')  # 将数据加载到numpy数组中
-Y = np.load('../generated_games/labels-200.npy')
+X = np.load('../generate_games/features-200.npy')  # 将数据加载到numpy数组中
+Y = np.load('../generate_games/labels-200.npy')
 
+# X.shape == n * board_size * board_size
 samples = X.shape[0]
+
 
 """书上的源码，与作者修改后的有些不一样"""
 board_size = 9 * 9

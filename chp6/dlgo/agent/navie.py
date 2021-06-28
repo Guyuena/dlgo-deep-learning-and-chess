@@ -2,12 +2,12 @@ import random
 from dlgo.agent.base import Agent
 from dlgo.agent.helpers import is_point_an_eye
 from dlgo.gotypes import Point
-from dlgo.goboard_slow import Move
+from dlgo.goboard import Move
 
 
 __all__ = ['RandomBot']
 
-# 一个随机的围棋机器人
+# 一个随机的围棋代理机器人
 
 
 # 随机落子AI

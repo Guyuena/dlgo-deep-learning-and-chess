@@ -5,8 +5,9 @@ from dlgo.agent.helpers_fast import is_point_an_eye
 from dlgo.goboard import Move
 from dlgo.gotypes import Point
 
-
 __all__ = ['FastRandomBot']
+
+" 一个随机的围棋代理机器人  比RandomBot速度更快点  因为减少使用for循环  "
 
 
 class FastRandomBot(Agent):
