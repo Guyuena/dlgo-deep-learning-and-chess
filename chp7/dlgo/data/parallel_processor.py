@@ -36,6 +36,10 @@ class GoDataProcessor:
         self.encoder = get_encoder_by_name(encoder, 19)
         self.data_dir = data_directory
 
+    # 您将实现主要的数据处理方法，称为load_go_data。在此方法中，您可以指定要处理的游戏数量以及要加载的数据类型
+    # 即训练或测试数据。load_go_data将从KGS中下载在线游戏记录，对指定数量的游戏进行采样，
+    # 通过创建功能和标签进行处理，然后将结果持久化到本地作为NumPy数组。
+
 # tag::load_generator[]
     def load_go_data(self, data_type='train', num_samples=1000,
                      use_generator=False):

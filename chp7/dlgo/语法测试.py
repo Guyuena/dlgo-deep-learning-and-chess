@@ -91,3 +91,25 @@ print('\n')
 list=[1,2,3,4]
 for x in list:
     print (x, end=" ")
+
+
+
+"""将字符串处理成只有ASCII字符"""
+import unicodedata, sys
+
+print()
+
+a = 's\u00f1o'
+print(a)
+print(ascii(a))
+b = unicodedata.normalize('NFD', a)
+print(b)
+print(ascii(b))
+
+print()
+
+result1 = a.encode('ascii', 'ignore').decode('ascii')
+print(result1)
+result = b.encode('ascii', 'ignore').decode('ascii')  # 这里的ascii可以改成你想处理成的任何编码格式
+print(result)
+

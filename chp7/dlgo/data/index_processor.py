@@ -18,13 +18,14 @@ def worker(url_and_target):  # Parallelize data download via multiprocessing
     except (KeyboardInterrupt, SystemExit):
         print('>>> Exiting child process')
 
-
+# 要下载游戏数据，您可以在数据子模块中添加新文件index_processor.py中，并创建一个名为KGSIndex的类，然后实现其中的download_files方法
 class KGSIndex:
+    # 负责下载棋谱数据
 
     def __init__(self,
                  kgs_url='http://u-go.net/gamerecords/',  # 数据库链接
-                 index_page='kgs_index.html',
-                 data_directory='data'):
+                 index_page='kgs_index.html',  # 索引
+                 data_directory='data'):  # 新建文件夹，保存下载的tar.gz文件
         """Create an index of zip files containing SGF data of actual Go Games on KGS.
         Parameters:
         -----------

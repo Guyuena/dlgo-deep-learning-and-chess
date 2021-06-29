@@ -190,6 +190,11 @@ def parse_sgf_game(s):
     Identifies the start of the SGF content by looking for '(;' (with possible
     whitespace between); ignores everything preceding that. Ignores everything
     following the first game.
+
+    从字符串中读取单个 SGF 游戏，返回解析树。 s -- 8 位字符串返回一个 Coarse_game_tree。应用 FF[4] 的规则。
+    如果无法解析字符串，则引发 ValueError。如果一个属性在一个节点中出现多次（规范不允许），
+    则将其视为具有多个值的单个属性。通过查找 '(;' （中间可能有空格）来标识 SGF 内容的开始；
+    忽略前面的所有内容。忽略第一场比赛之后的所有内容。
     """
     game_tree, _ = _parse_sgf_game(s, 0)
     if game_tree is None:

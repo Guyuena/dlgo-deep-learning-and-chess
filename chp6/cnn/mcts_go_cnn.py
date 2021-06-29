@@ -10,7 +10,10 @@ from keras.layers import Conv2D, MaxPooling2D
 
 np.random.seed(123)  # 设置一个固定的随机种子，以确保这个脚本可以严格重现
 
+# 加载特征(就是局面)
 X = np.load('../generate_games/features-200.npy')  # 将数据加载到numpy数组中
+
+# 加载标签(当前局面的落子）
 Y = np.load('../generate_games/labels-200.npy')
 
 # X.shape == n * board_size * board_size
@@ -18,9 +21,13 @@ samples = X.shape[0]
 
 """书上的源码，与作者修改后的有些不一样"""
 board_size = 9 * 9
+
+# 输入数据形状是三维的；您使用一个平面表示9×9的棋盘
 X = X.reshape(samples, board_size)
 Y = Y.reshape(samples, board_size)
 train_samples = int(0.9 * samples)
+
+# 拿出90%用来训练,10%用于测试
 X_train, X_test = X[:train_samples], X[train_samples:]
 Y_train, Y_test = Y[:train_samples], Y[train_samples:]
 
@@ -60,6 +67,39 @@ model.fit(X_train, Y_train,
 score = model.evaluate(X_test, Y_test, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
+
+"评估这个模型"
+# 表示棋盘的矩阵
+test_board = np.array([[
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, -1, 1, -1, 0, 0, 0, 0,
+    0, 1, -1, 1, -1, 0, 0, 0, 0,
+    0, 0, 1, -1, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+]])
+
+
+# 输出一个棋盘局面下的预测值
+move_prob = model.predict(test_board)[0]
+i = 0
+for row in range(9):
+    row_formatted = []
+    for cow in range(9):
+        row_formatted.append('{:.3f}'.format(move_prob[i]));
+        i += 1
+    print(' '.join(row_formatted))
+
+
+
+
+
+
+
+
 
 """下面注释的是作者的GitHub源码"""
 # model = Sequential()

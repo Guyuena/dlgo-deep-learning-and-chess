@@ -1,0 +1,45 @@
+Metadata-Version: 1.1
+Name: gomill
+Version: 0.8.3
+Summary: Tools for testing and tuning Go-playing programs
+Home-page: https://mjw.woodcraft.me.uk/gomill/
+Author: Matthew Woodcraft
+Author-email: matthew@woodcraft.me.uk
+License: MIT
+Download-URL: https://mjw.woodcraft.me.uk/gomill/download/gomill-0.8.3.tar.gz
+Description: Gomill is a suite of tools, and a Python library, for use in developing and
+        testing Go-playing programs. It is based around the Go Text Protocol (GTP) and
+        the Smart Game Format (SGF).
+        
+        The principal tool is the ringmaster, which plays programs against each other
+        and keeps track of the results.
+        
+        There is also experimental support for automatically tuning program parameters.
+        
+        Download: https://mjw.woodcraft.me.uk/gomill/download/gomill-0.8.3.tar.gz
+        
+        Documentation: https://mjw.woodcraft.me.uk/gomill/download/gomill-doc-0.8.3.tar.gz
+        
+        Online Documentation: https://mjw.woodcraft.me.uk/gomill/doc/0.8.3/
+        
+        Changelog: https://mjw.woodcraft.me.uk/gomill/doc/0.8.3/changes.html
+        
+        Github: https://github.com/mattheww/gomill
+        
+        
+Keywords: go,baduk,weiqi,gtp,sgf
+Platform: POSIX
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.5
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python
+Classifier: Topic :: Games/Entertainment :: Board Games
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

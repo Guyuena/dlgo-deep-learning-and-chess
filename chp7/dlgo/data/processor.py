@@ -41,12 +41,17 @@ class GoDataProcessor:
      实现主要的数据处理方法，称为load_go_data。在此方法中，您可以指定要处理的游戏数量以及要加载的数据类型，即训练或测试数据。
      load_go_data将从KGS中下载在线游戏记录，对指定数量的游戏进行采样，通过创建功能和标签进行处理，然后将结果持久化到本地作为NumPy数组。
      process_zip() unzip_data() consolidate_games() get_handicap()  num_total_examples()
+     
+     
+     实现主要的数据处理方法，称为load_go_data。在此方法中，您可以指定要处理的游戏数量以及要加载的数据类型，即训练或测试数据。
+     load_go_data将从KGS中下载在线游戏记录，对指定数量的游戏进行采样，通过创建功能和标签进行处理，然后将结果持久化到本地作为NumPy数组。
+
     """
     # tag::load_go_data[]
     # 数据加载
     def load_go_data(self, data_type='train',  # <1>  训练数据集还是测试数据集
                      num_samples=1000):  # <2> 加载的棋局数量
-        index = KGSIndex(data_directory=self.data_dir)
+        index = KGSIndex(data_directory=self.data_dir)  # 例化下载工具
         index.download_files()  # <3> 从KGS下载所有棋局数据，并保存到本地
 
         sampler = Sampler(data_dir=self.data_dir)  # 下载后用采样器进行拆开

@@ -6,10 +6,18 @@ Adapted from gomill by Matthew Woodcraft, https://github.com/mattheww/gomill
 from __future__ import absolute_import
 import datetime
 
-import six
 
-from . import sgf_grammar
-from . import sgf_properties
+import six
+from past.builtins import reload
+
+from dlgo.gosgf import sgf_grammar
+from dlgo.gosgf import sgf_properties
+
+
+import sys
+
+
+
 
 # __all__ 变量，该变量的值是一个列表，存储的是当前模块中一些成员（变量、函数或者类）的名称。
 # 通过在模块文件中设置 __all__ 变量，当其它文件以“from 模块名 import *”的形式导入该模块时，该文件中只能使用 __all__ 列表中指定的成员。
@@ -501,10 +509,12 @@ class Sgf_game:  # smart game format 游戏树  负责对这些字符串解码�
         See from_coarse_game_tree for details of size and encoding handling.
         输入一个sgf数据格式的字符串内容数据，可以根据该内容构建出一个Sgf_game实例
         """
+
         if not isinstance(s, six.binary_type):
-            s = s.encode('ascii')
+            s = s.encode('ascii', 'ignore')  # 在某些python环境下需要添加参数'ignore'不然报错，比如我用的是py3.7 tensorflow2.4
         coarse_game = sgf_grammar.parse_sgf_game(s)
         return cls.from_coarse_game_tree(coarse_game, override_encoding)  # 返回博弈树
+
 
     def serialise(self, wrap=79):
         """Serialise the SGF data as a string.

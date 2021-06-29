@@ -7,11 +7,13 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 
 "加入Conv2D"
-"按书上的源码来"
+"按书上的源码来，加入了池化层，dropout失活层"
 np.random.seed(123)
-X = np.load('features.npy')
-Y = np.load('labels.npy')
-
+# X = np.load('features.npy')
+# Y = np.load('labels.npy')
+X = np.load('../generate_games/features-200.npy')  # 将数据加载到numpy数组中
+# 加载标签(当前局面的落子）
+Y = np.load('../generate_games/labels-200.npy')
 samples = X.shape[0]
 size = 9
 input_shape = (size, size, 1)  # <2>
@@ -52,7 +54,7 @@ model.compile(loss='mean_squared_error',
 
 model.fit(X_train, Y_train,
           batch_size=64,
-          epochs=5,
+          epochs=50,
           verbose=1,
           validation_data=(X_test, Y_test))
 
@@ -61,3 +63,29 @@ print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 # end::mcts_go_cnn_eval[]
 
+
+"尝试预测"
+# 表示棋盘的矩阵
+test_board = np.array([[
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 1, -1, 1, -1, 0, 0, 0, 0,
+    0, 1, -1, 1, -1, 0, 0, 0, 0,
+    0, 0, 1, -1, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
+]])
+
+test_board = test_board.reshape(1, size, size, 1)
+
+# 输出一个棋盘局面下的预测值
+move_prob = model.predict(test_board)[0]
+i = 0
+for row in range(9):
+    row_formatted = []
+    for cow in range(9):
+        row_formatted.append('{:.3f}'.format(move_prob[i]));
+        i += 1
+    print(' '.join(row_formatted))
