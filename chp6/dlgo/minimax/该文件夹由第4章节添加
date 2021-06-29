@@ -1,3 +1,8 @@
 极大极小搜索算法
 剪枝技术
 极大极小：希望自己得分最大，对手得分最少
+
+alphabeta.py  剪枝算法       内含游戏代理人AlphaBetaAgent
+depthprune.py 宽度剪枝算法    内含游戏代理人DepthPrunedAgent
+alphabeta-robot-games.py 游戏测试
+depthprune-robot-game-test.py 游戏测试

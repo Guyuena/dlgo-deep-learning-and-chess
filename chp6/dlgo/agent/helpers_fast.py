@@ -1,4 +1,5 @@
 from dlgo.gotypes import Point
+from dlgo.gotypes import Player
 
 __all__ = [
     'is_point_an_eye',
@@ -10,10 +11,15 @@ def is_point_an_eye(board, point, color):
     if board.get(point) is not None:
         return False
     # All adjacent points must contain friendly stones.
-    for neighbor in board.neighbors(point):
+    # for neighbor in board.neighbors(point):
+    #     neighbor_color = board.get(neighbor)
+    #     if neighbor_color != color:
+    #         return False
+    for neighbor in point.neighbors():
         neighbor_color = board.get(neighbor)
         if neighbor_color != color:
             return False
+
     # We must control 3 out of 4 corners if the point is in the middle
     # of the board; on the edge we must control all corners.
     friendly_corners = 0

@@ -65,19 +65,21 @@ def capture_diff(game_state):
 
 # 机器人对战机器人            为了显示方便去吧 goboard.py的这条语句注释掉  print('Illegal play on %s' % str(point)) 并用语句代替
 def main():
-    board_size = 5
+    board_size = 9
     game = goboard.GameState.new_game(board_size)
-    print(capture_diff)
     bots = {
-        gotypes.Player.black: AlphaBetaAgent(10, capture_diff),  # 特别注意AlphaBetaAgent的例化参数eval_fn： 这个参数是个函数，也就是评估函数，把函数当参数
-        gotypes.Player.white: AlphaBetaAgent(10, capture_diff),
+        gotypes.Player.black: AlphaBetaAgent(2, capture_diff),  # 特别注意AlphaBetaAgent的例化参数eval_fn： 这个参数是个函数，也就是评估函数，把函数当参数
+        gotypes.Player.white: AlphaBetaAgent(2, capture_diff),
     }
     while not game.is_over():
         time.sleep(0.3)  # <1> 0.3s休眠
 
         print(chr(27) + "[2J")  # <2> 每次落子前都清除屏幕
         print_board(game.board)
+        start_time = time.time()
         bot_move = bots[game.next_player].select_move(game)
+        end_time = time.time()
+        print("AI思考时间：" + str(end_time - start_time) + "秒")
         print_move(game.next_player, bot_move)
         game = game.apply_move(bot_move)
     print("游戏结束")

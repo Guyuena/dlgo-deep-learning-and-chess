@@ -16,7 +16,6 @@ Y = np.load('../generate_games/labels-200.npy')
 # X.shape == n * board_size * board_size
 samples = X.shape[0]
 
-
 """书上的源码，与作者修改后的有些不一样"""
 board_size = 9 * 9
 X = X.reshape(samples, board_size)
@@ -24,7 +23,6 @@ Y = Y.reshape(samples, board_size)
 train_samples = int(0.9 * samples)
 X_train, X_test = X[:train_samples], X[train_samples:]
 Y_train, Y_test = Y[:train_samples], Y[train_samples:]
-
 
 """下面注释的代码是作者的源码"""
 # size = 9
@@ -41,26 +39,27 @@ Y_train, Y_test = Y[:train_samples], Y[train_samples:]
 """在生成的围棋棋谱数据上运行Keras多层感知机"""
 # 下面是书上源码
 model = Sequential()
-model.add(Dense(1000, activation='sigmoid',input_shape=(board_size,)))
+model.add(Dense(1000, activation='sigmoid', input_shape=(board_size,)))
 model.add(Dense(500, activation='sigmoid'))
 model.add(Dense(board_size, activation='sigmoid'))
 model.summary()
 
 model.compile(loss='mean_squared_error',
-              optimize='sgd',
-              metrics=['accuracy'])
+              optimizer='sgd',
+              metrics=['accuracy'])  # accuracy指标用来度量模型得分最高的预测输出与数据真实标签之间匹配的频率
+# 该accuracy就是大家熟知的最朴素的accuracy。比如我们有6个样本，其真实标签y_true为[0, 1, 3, 3, 4, 2]，
+# 但被一个模型预测为了[0, 1, 3, 4, 4, 4]，即y_pred=[0, 1, 3, 4, 4, 4]，那么该模型的accuracy=4/6=66.67%。
 
 model.fit(X_train, Y_train,
           batch_size=64,
-          epochs=15,
+          epochs=50,
           verbose=1,
-          validation_data=(X_test,Y_test))
+          validation_data=(X_test, Y_test))
 
 # 评分包括损失值和你的精确值
-score = model.evaluate(X_test, Y_test,verbose=0)
+score = model.evaluate(X_test, Y_test, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
-
 
 """下面注释的是作者的GitHub源码"""
 # model = Sequential()

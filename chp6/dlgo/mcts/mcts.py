@@ -2,7 +2,8 @@ import math
 import random
 
 from dlgo.agent.base import Agent
-from dlgo.agent import naive_fast
+# from dlgo.agent import naive_fast
+from dlgo.mcts import mcts_navie_fast
 # from dlgo import agent
 from dlgo.gotypes import Player
 from dlgo.utils import point_from_coords
@@ -18,6 +19,8 @@ __all__ = [
      2.从那个位置模拟一个随机对局。
 
      3.更新树的关于随机游戏结果的统计数据。
+     
+     最后搜索树的顶部统计数据来告诉选择哪个动作
 """
 
 def fmt(x):
@@ -70,7 +73,7 @@ class MCTSNode(object):
         self.game_state = game_state   # 当前节点的局面
         self.parent = parent  # 父节点
         self.move = move      # 表示造成这个节点的上一个落子
-        self.win_counts = {   # 展示黑白胜利的统计
+        self.win_counts = {   # 展示黑白胜利的统计 统计该节点之后任意棋局开始的胜负计数
             Player.black: 0,
             Player.white: 0,
         }
@@ -122,7 +125,7 @@ class MCTSNode(object):
 """
 
 
-class MCTSAgent(Agent):
+class MCTSAgent(Agent):  # 蒙特卡洛搜索树代理，又可以用于构造游戏对弈的棋手代理人了  外部只能通过例化MCTSAgent来使用蒙特卡洛搜索树
     # 构造函数以及初始化
     def __init__(self, num_rounds, temperature):
         Agent.__init__(self)
@@ -158,7 +161,7 @@ class MCTSAgent(Agent):
 # 第四章的蒙特卡洛算法
     def select_move(self, game_state):
 
-        root = MCTSNode(game_state)
+        root = MCTSNode(game_state)  # 把当前游戏局面作为根节点，在这个节点进行下一步搜索，找到最好的落子动作
 
         # 循环执行多次
         for i in range(self.num_rounds):
@@ -173,7 +176,8 @@ class MCTSAgent(Agent):
                 node = node.add_random_child()
 
             # 从当前局面进行模拟对局，得出胜者
-            winner = self.simulate_random_game(node.game_state)
+            "开始推演"
+            winner = self.simulate_random_game(node.game_state)  # 从这个节点开始模拟一局随机推演
 
             # 从当前节点进行回溯更新当前及祖先胜者数
             while node is not None:
@@ -183,6 +187,7 @@ class MCTSAgent(Agent):
         # Having performed as many MCTS rounds as we have time for, we
         # now pick a move.
         """从根节点的诸多孩子节点中根据获胜几率选择最佳下法"""
+        # 完成MCTS推演后选择一个动作
         best_move = None
         best_pct = -1.0
         for child in root.children:
@@ -190,10 +195,11 @@ class MCTSAgent(Agent):
             if child_pct > best_pct:
                 best_pct = child_pct
                 best_move = child.move
-        print('Select move %s with win pct %.3f' % (best_move, best_pct))
+        # print('Select move %s with win pct %.3f' % (best_move, best_pct))
+        print('选择落子位置  %s with win pct %.3f' % (best_move, best_pct))
         return best_move
 # end::mcts-selection[]
-
+    'UCT来选择要进行搜索的分支'
     # 计算UCT分值
     def get_UCT_score(child_rollout, parent_rollout, win_prc, temperature):
         exploration = math.sqrt(math.log(parent_rollout) / child_rollout)
@@ -232,8 +238,11 @@ class MCTSAgent(Agent):
             # Player.white: agent.FastRandomBot(),
             # Player.black: navie.RandomBot(),
             # Player.white: navie.RandomBot(),
-            Player.black: naive_fast.FastRandomBot(),
-            Player.white: naive_fast.FastRandomBot(),
+            # Player.black: naive_fast.FastRandomBot(),
+            # Player.white: naive_fast.FastRandomBot(),
+
+            Player.black: mcts_navie_fast.MCTS_FastRandomBot(),  # 在蒙特卡洛树内要随机产生一个游戏，就需要随机游戏代理，这一点要注意，调用外部随机游戏代理agent
+            Player.white: mcts_navie_fast.MCTS_FastRandomBot(),
         }
         while not game.is_over():
             bot_move = bots[game.next_player].select_move(game)
