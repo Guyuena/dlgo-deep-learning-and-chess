@@ -95,4 +95,4 @@ if __name__ == '__main__':
 # <2> For the specified number of games we generate game data.
 # <3> After all games have been generated, we concatenate features and labels, respectively.
 # <4> We store feature and label data to separate files, as specified by the command line options.
-# end::generate_mcts_main[]
+# end::generate_mcts_main[]层 pip install -i https://pypi.mirrors.ustc.edu.cn/simple/ tensorflow-gpu==1.8.0

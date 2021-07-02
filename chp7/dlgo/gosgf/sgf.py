@@ -10,8 +10,9 @@ import datetime
 import six
 from past.builtins import reload
 
-from dlgo.gosgf import sgf_grammar
-from dlgo.gosgf import sgf_properties
+
+from dlgo.gosgf import sgf_grammar  # sgf语法
+from dlgo.gosgf import sgf_properties  # sgf属性
 
 
 import sys
@@ -426,6 +427,8 @@ class _Unexpanded_root_tree_node(_Root_tree_node):
             yield Node(properties, presenter)
 
 
+
+# Sgf_game类解码这些字符串并将它们作为Python元组返回。你就可以将这些落子应用到GameState对象以重建游戏
 class Sgf_game:  # smart game format 游戏树  负责对这些字符串解码，并返回成python元组
     """An SGF game tree.
     The complete game tree is represented using Tree_nodes. The various methods

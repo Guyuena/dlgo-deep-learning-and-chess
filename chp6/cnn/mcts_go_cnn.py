@@ -2,7 +2,7 @@ from __future__ import print_function
 
 # tag::mcts_go_cnn_preprocessing[]
 
-"""加载并预处理先前存储的围棋棋谱数据"""
+# """加载并预处理先前存储的围棋棋谱数据"""
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
@@ -31,7 +31,7 @@ train_samples = int(0.9 * samples)
 X_train, X_test = X[:train_samples], X[train_samples:]
 Y_train, Y_test = Y[:train_samples], Y[train_samples:]
 
-"""下面注释的代码是作者的源码"""
+# """下面注释的代码是作者的源码"""
 # size = 9
 # input_shape = (size, size, 1)
 #
@@ -43,7 +43,7 @@ Y_train, Y_test = Y[:train_samples], Y[train_samples:]
 # end::mcts_go_cnn_preprocessing[]
 
 # tag::mcts_go_cnn_model[]
-"""在生成的围棋棋谱数据上运行Keras多层感知机"""
+# """在生成的围棋棋谱数据上运行Keras多层感知机"""
 # 下面是书上源码
 model = Sequential()
 model.add(Dense(1000, activation='sigmoid', input_shape=(board_size,)))
@@ -59,7 +59,7 @@ model.compile(loss='mean_squared_error',
 
 model.fit(X_train, Y_train,
           batch_size=64,
-          epochs=50,
+          epochs=5,
           verbose=1,
           validation_data=(X_test, Y_test))
 
@@ -68,7 +68,7 @@ score = model.evaluate(X_test, Y_test, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
-"评估这个模型"
+# "评估这个模型"
 # 表示棋盘的矩阵
 test_board = np.array([[
     0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -101,7 +101,7 @@ for row in range(9):
 
 
 
-"""下面注释的是作者的GitHub源码"""
+# """下面注释的是作者的GitHub源码"""
 # model = Sequential()
 # model.add(Conv2D(32, kernel_size=(3, 3),
 #                  activation='relu',

@@ -19,16 +19,19 @@ sgf_content = "(;GM[1]FF[4]SZ[9];B[ee];W[ef];B[ff]" + ";W[df];B[fe];W[fc];
 # 使用from_string方法，您可以创建一个SGF_game
 print(type(sgf_content))
 print(sgf_content)
-sgf_game = Sgf_game.from_string(sgf_content)
+sgf_game = Sgf_game.from_string(sgf_content)  # 用Sgf_game的.from_string()API来创建Sgf_game实例对象
+print(type(sgf_game))
 game_state = GameState.new_game(19)
 
 # 重复游戏的主要顺序，你忽略了棋局变化和评论
 for item in sgf_game.main_sequence_iter():
     # 这个主序列中的项是(颜色，落子)对，其中"落子"是一对坐标。
+
     color, move_tuple = item.get_move()
     if color is not None and move_tuple is not None:
         row, col = move_tuple
         point = Point(row + 1, col + 1)
+        print(point)
         move = Move.play(point)
         # 将读出的落子应用到棋盘上
         game_state = game_state.apply_move(move)

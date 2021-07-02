@@ -108,8 +108,12 @@ print(ascii(b))
 
 print()
 
+
 result1 = a.encode('ascii', 'ignore').decode('ascii')
 print(result1)
 result = b.encode('ascii', 'ignore').decode('ascii')  # 这里的ascii可以改成你想处理成的任何编码格式
 print(result)
 
+from dlgo.data.parallel_processor import GoDataProcessor   # 训练数据处理器
+from dlgo.encoders.oneplane import OnePlaneEncoder  # 编码器
+from dlgo.networks.small import layers   # 待训练的网络

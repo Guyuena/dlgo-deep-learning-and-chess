@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 # tag::small_network[]
+import tensorflow
 
 # 小规模神经网络
 from keras.layers.core import Dense, Activation, Flatten
